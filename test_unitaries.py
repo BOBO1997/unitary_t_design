@@ -44,10 +44,14 @@ def RDC(n: int, D: int, to_gate: bool = False, seed: Union[int, np.random.Genera
     """
     if seed is not None:
         np.random.seed(seed)
+    else:
+        np.random.seed(42)
 
     qc = QuantumCircuit(n)
     for l in range(D):
         thetas = np.random.uniform(low = 0, high = 2 * np.pi, size = 2 ** n)
+        # print(thetas)
+        # print(np.exp(thetas * 1j))
         qc.append(Diagonal(np.exp(thetas * 1j)).to_gate(), range(n))
         qc.h(range(n))
     return qc.to_gate(label="RDC("+str(n)+","+str(D)+")") if to_gate else qc
